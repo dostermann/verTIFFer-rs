@@ -1,22 +1,29 @@
-use eframe::{epi, egui};
+use eframe::{epi, egui, epaint::tessellator::path};
+use std::path::PathBuf;
 use rfd::FileDialog;
 
 #[derive(Default)]
 struct Vtff {}
 
-fn src_folder() -> Option<std::path::PathBuf> {
+fn src_folder() -> PathBuf {
         let src_folder = FileDialog::new()
             .set_directory("/")
             .pick_folder();
-        src_folder
+        match src_folder {
+            None => PathBuf::new(),
+            Some(path) => path,
+        }
     }
 
-    fn dst_folder() -> Option<std::path::PathBuf> {
-        let dst_folder = FileDialog::new()
-            .set_directory("/")
-            .pick_folder();
-        dst_folder
-    }
+fn dst_folder() -> PathBuf {
+    let dst_folder = FileDialog::new()
+        .set_directory("/")
+        .pick_folder();
+        match dst_folder {
+            None => PathBuf::new(),
+            Some(path) => path,
+        }
+}
 
 impl epi::App for Vtff {
     fn name(&self) -> &str {
@@ -37,11 +44,11 @@ impl epi::App for Vtff {
 
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.with_layout(egui::Layout::top_down(egui::Align::Center), |ui| {
-                ui.add_space(100.0);
-                ui.label("Überschrift");
+                ui.add_space(150.0);
+                ui.heading("Überschrift");
                 ui.label("hier kommt was rein");
-                if ui.button("Browse...").clicked() {
-                    src_folder();
+                if ui.button("Quellverzeichnis wählen...").clicked() {
+                    let src_path = src_folder();
                 }
             })
         });
