@@ -4,12 +4,27 @@ use rfd::FileDialog;
 #[derive(Default)]
 struct Vtff {}
 
+fn src_folder() -> Option<std::path::PathBuf> {
+        let src_folder = FileDialog::new()
+            .set_directory("/")
+            .pick_folder();
+        src_folder
+    }
+
+    fn dst_folder() -> Option<std::path::PathBuf> {
+        let dst_folder = FileDialog::new()
+            .set_directory("/")
+            .pick_folder();
+        dst_folder
+    }
+
 impl epi::App for Vtff {
     fn name(&self) -> &str {
         "VerTIFFer-rs"
     }
 
     fn update(&mut self, ctx: &egui::Context, frame: &epi::Frame) {
+        // GUI
         egui::TopBottomPanel::top("top_panel").show(ctx, |ui| {
             egui::menu::bar(ui, |ui| {
                 ui.menu_button("Datei", |ui| {
@@ -21,12 +36,14 @@ impl epi::App for Vtff {
         });
 
         egui::CentralPanel::default().show(ctx, |ui| {
-            ui.centered_and_justified(|ui| {
-                ui.horizontal(|ui| {
-                    ui.heading("Überschrift");
-                    ui.label("hier kommt was rein");
-                });
-            });
+            ui.with_layout(egui::Layout::top_down(egui::Align::Center), |ui| {
+                ui.add_space(100.0);
+                ui.label("Überschrift");
+                ui.label("hier kommt was rein");
+                if ui.button("Browse...").clicked() {
+                    src_folder();
+                }
+            })
         });
     }
 }
