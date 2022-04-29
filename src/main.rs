@@ -13,7 +13,7 @@ fn src_folder() -> PathBuf {
             None => PathBuf::new(),
             Some(path) => path,
         }
-    }
+}
 
 fn dst_folder() -> PathBuf {
     let dst_folder = FileDialog::new()
@@ -27,7 +27,7 @@ fn dst_folder() -> PathBuf {
 
 impl epi::App for Vtff {
     fn name(&self) -> &str {
-        "VerTIFFer-rs"
+        "verTIFFer-rs"
     }
 
     fn update(&mut self, ctx: &egui::Context, frame: &epi::Frame) {
@@ -44,19 +44,24 @@ impl epi::App for Vtff {
 
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.with_layout(egui::Layout::top_down(egui::Align::Center), |ui| {
-                ui.add_space(150.0);
-                ui.heading("Überschrift");
-                ui.label("hier kommt was rein");
-                if ui.button("Quellverzeichnis wählen...").clicked() {
-                    let src_path = src_folder();
-                }
-            })
+                ui.add_space(32.0);
+                ui.horizontal_wrapped(|ui| {
+                    ui.label("hier kommt was rein");
+                    if ui.button("Quellverzeichnis wählen...").clicked() {
+                        let src_path = src_folder();
+                    }
+                });
+            });
         });
     }
 }
 
 fn main() {
     let app = Vtff::default();
-    let native_options = eframe::NativeOptions::default();
+    let native_options = eframe::NativeOptions {
+        initial_window_size: Some(egui::vec2(512.0, 256.0)),
+        resizable: false,
+        ..Default::default()
+    };
     eframe::run_native(Box::new(app), native_options);
 }
