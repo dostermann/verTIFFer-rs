@@ -2,9 +2,6 @@ use eframe::{epi, egui};
 use std::path::PathBuf;
 use rfd::FileDialog;
 
-#[derive(Default)]
-struct Vtff {}
-
 fn src_folder() -> PathBuf {
         let src_folder = FileDialog::new()
             .set_directory("/")
@@ -25,12 +22,16 @@ fn dst_folder() -> PathBuf {
         }
 }
 
+#[derive(Default)]
+struct Vtff {}
+
 impl epi::App for Vtff {
     fn name(&self) -> &str {
         "verTIFFer-rs"
     }
 
     fn update(&mut self, ctx: &egui::Context, frame: &epi::Frame) {
+        let Self {} = self;
         // GUI
         egui::TopBottomPanel::top("top_panel").show(ctx, |ui| {
             egui::menu::bar(ui, |ui| {
@@ -46,7 +47,6 @@ impl epi::App for Vtff {
             ui.with_layout(egui::Layout::top_down(egui::Align::Center), |ui| {
                 ui.add_space(32.0);
                 ui.horizontal_wrapped(|ui| {
-                    ui.label("hier kommt was rein");
                     if ui.button("Quellverzeichnis wählen...").clicked() {
                         let src_path = src_folder();
                     }
