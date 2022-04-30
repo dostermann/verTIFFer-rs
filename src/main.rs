@@ -27,10 +27,12 @@ impl epi::App for Vtff {
             });
         });
 
+
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.with_layout(egui::Layout::top_down(egui::Align::Center), |ui| {
+
                 ui.add_space(32.0);
-                ui.horizontal_wrapped(|ui| {
+                ui.horizontal(|ui| {
                     if let Some(picked_src_path_display) = &self.picked_src_path_display {
                         ui.label(picked_src_path_display);
                     }
@@ -38,6 +40,20 @@ impl epi::App for Vtff {
                         if let Some(path) = FileDialog::new().set_directory("/").pick_folder() {
                             self.picked_src_path_display = Some(path.display().to_string().to_owned());
                             self.picked_src_path = Some(path);
+                        }
+                    }
+                });
+
+                ui.add_space(64.0);
+
+                ui.horizontal(|ui| {
+                    if let Some(picked_dst_path_display) = &self.picked_dst_path_display {
+                        ui.label(picked_dst_path_display);
+                    }
+                    if ui.button("Zielverzeichnis wählen...").clicked() {
+                        if let Some(path) = FileDialog::new().set_directory("/").pick_folder() {
+                            self.picked_dst_path_display = Some(path.display().to_string().to_owned());
+                            self.picked_dst_path = Some(path);
                         }
                     }
                 });
