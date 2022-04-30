@@ -29,45 +29,55 @@ impl epi::App for Vtff {
 
 
         egui::CentralPanel::default().show(ctx, |ui| {
-            ui.with_layout(egui::Layout::top_down(egui::Align::Center), |ui| {
+            ui.with_layout(
+                egui::Layout::top_down(egui::Align::Center), 
+                |ui| {
 
-                ui.add_space(48.0);
-                ui.horizontal_wrapped(|ui| {
+                    ui.add_space(48.0);
+                    ui.horizontal_wrapped(|ui| {
 
-                    ui.add_sized(
-                        [480.0, 16.0],
-                        egui::Label::new(RichText::new(&self.src_path_display).monospace())
-                    );
+                        ui.add_sized(
+                            [480.0, 16.0],
+                            egui::Label::new(
+                                RichText::new(&self.src_path_display)
+                                .monospace())
+                        );
 
-                    if ui.button("Quellverzeichnis...").clicked() {
-                        if let Some(path) = FileDialog::new().set_directory("/").pick_folder() {
-                            self.src_path_display = path.display().to_string().to_owned();
-                            self.src_path = Some(path);
+                        if ui.button("Quellverzeichnis...").clicked() {
+                            if let Some(path) = FileDialog::new()
+                                .set_directory("/")
+                                .pick_folder() {
+                                    self.src_path_display = path.display().to_string().to_owned();
+                                    self.src_path = Some(path);
+                            }
                         }
-                    }
-                });
+                    });
 
-                ui.add_space(64.0);
-                ui.horizontal_wrapped(|ui| {
+                    ui.add_space(64.0);
+                    ui.horizontal_wrapped(|ui| {
 
-                    ui.add_sized(
-                        [480.0, 16.0],
-                        egui::Label::new(RichText::new(&self.dst_path_display).monospace())
-                    );
+                        ui.add_sized(
+                            [480.0, 16.0],
+                            egui::Label::new(
+                                RichText::new(&self.dst_path_display)
+                                .monospace())
+                        );
 
-                    if ui.button("Zielverzeichnis...").clicked() {
-                        if let Some(path) = FileDialog::new().set_directory("/").pick_folder() {
-                            self.dst_path_display = path.display().to_string().to_owned();
-                            self.dst_path = Some(path);
+                        if ui.button("Zielverzeichnis...").clicked() {
+                            if let Some(path) = FileDialog::new()
+                                .set_directory("/")
+                                .pick_folder() {
+                                    self.dst_path_display = path.display().to_string().to_owned();
+                                    self.dst_path = Some(path);
+                            }
                         }
+                    });
+
+                    ui.add_space(96.0);
+
+                    if ui.button("verTIFF mich!").clicked() {
+                        
                     }
-                });
-
-                ui.add_space(96.0);
-
-                if ui.button("verTIFF mich!").clicked() {
-                    
-                }
             });
         });
     }
