@@ -1,3 +1,5 @@
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+
 use eframe::{epi, egui::{self, RichText}};
 use std::path::PathBuf;
 use rfd::FileDialog;
