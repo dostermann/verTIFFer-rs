@@ -86,15 +86,17 @@ fn run_bttn(src_path: &str, dst_path: &str) {
     for entry in glob(format!("{}/*.pdf", src_path).as_str()).unwrap() {
         match entry {
             Ok(path) => {
-                Command::new("pdftoppm")
-                        .arg("-gray")
-                        .arg("-tiff")
-                        .arg("-r")
+                Command::new("magick")
+                        .arg("-density")
                         .arg("300")
-                        .arg("-tiffcompression")
-                        .arg("lzw")
                         .arg(format!("{}", path.display().to_string()))
-                        .arg(format!("{}/", &dst_path))
+                        .arg("-alpha")
+                        .arg("off")
+                        .arg("-colorspace")
+                        .arg("gray")
+                        .arg("-compress")
+                        .arg("zip")
+                        .arg(format!("{}.pdf", path.display().to_string()))
                         .output()
                         .expect("failed to execute process!");
             },
