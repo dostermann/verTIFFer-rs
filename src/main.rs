@@ -13,7 +13,7 @@ struct Vtff {
 
 impl epi::App for Vtff {
     fn name(&self) -> &str {
-        "verTIFFer-rs"
+        "verTIFFer-rs 1.0"
     }
 
     fn update(&mut self, ctx: &egui::Context, frame: &epi::Frame) {
@@ -27,7 +27,6 @@ impl epi::App for Vtff {
                 });
             });
         });
-
 
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.with_layout(
@@ -49,11 +48,12 @@ impl epi::App for Vtff {
                                 .set_directory("/")
                                 .pick_folder() {
                                     self.src_path = path.display().to_string().to_owned();
-                            }
+                                }
                         }
                     });
 
                     ui.add_space(64.0);
+
                     ui.horizontal_wrapped(|ui| {
 
                         ui.add_sized(
@@ -77,7 +77,8 @@ impl epi::App for Vtff {
                     if ui.button("verTIFF mich!").clicked() {
                         run_bttn(&self.src_path, &self.dst_path)
                     }
-            });
+                }
+            );
         });
     }
 }
@@ -95,7 +96,11 @@ fn run_bttn(src_path: &str, dst_path: &str) {
                 Command::new("magick")
                         .arg("-density")
                         .arg("300")
-                        .arg(format!("{}", src_path_string))
+                        .arg(src_path_string)
+                        .arg("-background")
+                        .arg("white")
+                        .arg("-alpha")
+                        .arg("background")
                         .arg("-alpha")
                         .arg("off")
                         .arg("-colorspace")
