@@ -1,17 +1,14 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use eframe::{epi, egui::{self, RichText}};
-use std::path::PathBuf;
 use rfd::FileDialog;
 use glob::glob;
 use std::process::Command;
 
 #[derive(Default)]
 struct Vtff {
-    src_path: Option<PathBuf>,
-    src_path_display: String,
-    dst_path: Option<PathBuf>,
-    dst_path_display: String,
+    src_path: String,
+    dst_path: String,
 }
 
 impl epi::App for Vtff {
@@ -43,7 +40,7 @@ impl epi::App for Vtff {
                         ui.add_sized(
                             [480.0, 16.0],
                             egui::Label::new(
-                                RichText::new(&self.src_path_display)
+                                RichText::new(&self.src_path)
                                 .monospace())
                         );
 
@@ -51,8 +48,7 @@ impl epi::App for Vtff {
                             if let Some(path) = FileDialog::new()
                                 .set_directory("/")
                                 .pick_folder() {
-                                    self.src_path_display = path.display().to_string().to_owned();
-                                    self.src_path = Some(path);
+                                    self.src_path = path.display().to_string().to_owned();
                             }
                         }
                     });
@@ -63,7 +59,7 @@ impl epi::App for Vtff {
                         ui.add_sized(
                             [480.0, 16.0],
                             egui::Label::new(
-                                RichText::new(&self.dst_path_display)
+                                RichText::new(&self.dst_path)
                                 .monospace())
                         );
 
@@ -71,8 +67,7 @@ impl epi::App for Vtff {
                             if let Some(path) = FileDialog::new()
                                 .set_directory("/")
                                 .pick_folder() {
-                                    self.dst_path_display = path.display().to_string().to_owned();
-                                    self.dst_path = Some(path);
+                                    self.dst_path = path.display().to_string().to_owned();
                             }
                         }
                     });
@@ -80,7 +75,7 @@ impl epi::App for Vtff {
                     ui.add_space(96.0);
 
                     if ui.button("verTIFF mich!").clicked() {
-                        run_bttn(&self.src_path_display, &self.dst_path_display)
+                        run_bttn(&self.src_path, &self.dst_path)
                     }
             });
         });
