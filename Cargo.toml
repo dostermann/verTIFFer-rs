@@ -12,3 +12,4 @@ repository = "https://github.com/dostermann/verTIFFer-rs.git"
 [dependencies]
 eframe = "0.17.0"
 rfd = "0.8.2"
+glob = "0.3.0"

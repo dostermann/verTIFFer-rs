@@ -3,6 +3,8 @@
 use eframe::{epi, egui::{self, RichText}};
 use std::path::PathBuf;
 use rfd::FileDialog;
+use glob::glob;
+use std::process::Command;
 
 #[derive(Default)]
 struct Vtff {
@@ -78,10 +80,19 @@ impl epi::App for Vtff {
                     ui.add_space(96.0);
 
                     if ui.button("verTIFF mich!").clicked() {
-                        
+                        run_bttn(&self.src_path_display, &self.dst_path_display)
                     }
             });
         });
+    }
+}
+
+fn run_bttn(src_path: &str, dst_path: &str) {
+    for entry in glob(format!("{}/*.pdf", src_path).as_str()).unwrap() {
+        match entry {
+            Ok(path) => println!("{}", path.display()),
+            Err(e) => println!("{}", e),
+        }
     }
 }
 
