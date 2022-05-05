@@ -85,7 +85,19 @@ impl epi::App for Vtff {
 fn run_bttn(src_path: &str, dst_path: &str) {
     for entry in glob(format!("{}/*.pdf", src_path).as_str()).unwrap() {
         match entry {
-            Ok(path) => println!("{}", path.display()),
+            Ok(path) => {
+                Command::new("pdftoppm")
+                        .arg("-gray")
+                        .arg("-tiff")
+                        .arg("-r")
+                        .arg("300")
+                        .arg("-tiffcompression")
+                        .arg("lzw")
+                        .arg(format!("{}", path.display().to_string()))
+                        .arg(format!("{}/", &dst_path))
+                        .output()
+                        .expect("failed to execute process!");
+            },
             Err(e) => println!("{}", e),
         }
     }
