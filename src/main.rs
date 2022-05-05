@@ -86,17 +86,23 @@ fn run_bttn(src_path: &str, dst_path: &str) {
     for entry in glob(format!("{}/*.pdf", src_path).as_str()).unwrap() {
         match entry {
             Ok(path) => {
+                let src_path_string = path.display().to_string();
+                let filenames_with_ext: Vec<&str> = src_path_string.split("/").collect();
+                let filename_pdf = *filenames_with_ext.last().unwrap();
+                let savefile_wo_ext: Vec<&str> = filename_pdf.split(".").collect();
+                let savefile_tiff = format!("{}/{}.tiff", dst_path, savefile_wo_ext[0]);
+
                 Command::new("magick")
                         .arg("-density")
                         .arg("300")
-                        .arg(format!("{}", path.display().to_string()))
+                        .arg(format!("{}", src_path_string))
                         .arg("-alpha")
                         .arg("off")
                         .arg("-colorspace")
                         .arg("gray")
                         .arg("-compress")
                         .arg("zip")
-                        .arg(format!("{}.pdf", path.display().to_string()))
+                        .arg(savefile_tiff)
                         .output()
                         .expect("failed to execute process!");
             },
