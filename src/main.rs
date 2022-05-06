@@ -1,8 +1,11 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use eframe::{epi, egui::{self, RichText}};
-use rfd::FileDialog;
+use eframe::{
+    egui::{self, RichText},
+    epi,
+};
 use glob::glob;
+use rfd::FileDialog;
 use std::process::Command;
 
 #[derive(Default)]
@@ -29,56 +32,42 @@ impl epi::App for Vtff {
         });
 
         egui::CentralPanel::default().show(ctx, |ui| {
-            ui.with_layout(
-                egui::Layout::top_down(egui::Align::Center), 
-                |ui| {
+            ui.with_layout(egui::Layout::top_down(egui::Align::Center), |ui| {
+                ui.add_space(48.0);
+                ui.horizontal_wrapped(|ui| {
+                    ui.add_sized(
+                        [480.0, 16.0],
+                        egui::Label::new(RichText::new(&self.src_path).monospace()),
+                    );
 
-                    ui.add_space(48.0);
-                    ui.horizontal_wrapped(|ui| {
-
-                        ui.add_sized(
-                            [480.0, 16.0],
-                            egui::Label::new(
-                                RichText::new(&self.src_path)
-                                .monospace())
-                        );
-
-                        if ui.button("Quellverzeichnis...").clicked() {
-                            if let Some(path) = FileDialog::new()
-                                .set_directory("/")
-                                .pick_folder() {
-                                    self.src_path = path.display().to_string().to_owned();
-                                }
+                    if ui.button("Quellverzeichnis...").clicked() {
+                        if let Some(path) = FileDialog::new().set_directory("/").pick_folder() {
+                            self.src_path = path.display().to_string().to_owned();
                         }
-                    });
-
-                    ui.add_space(64.0);
-
-                    ui.horizontal_wrapped(|ui| {
-
-                        ui.add_sized(
-                            [480.0, 16.0],
-                            egui::Label::new(
-                                RichText::new(&self.dst_path)
-                                .monospace())
-                        );
-
-                        if ui.button("Zielverzeichnis...").clicked() {
-                            if let Some(path) = FileDialog::new()
-                                .set_directory("/")
-                                .pick_folder() {
-                                    self.dst_path = path.display().to_string().to_owned();
-                            }
-                        }
-                    });
-
-                    ui.add_space(96.0);
-
-                    if ui.button("verTIFF mich!").clicked() {
-                        run_bttn(&self.src_path, &self.dst_path)
                     }
+                });
+
+                ui.add_space(64.0);
+
+                ui.horizontal_wrapped(|ui| {
+                    ui.add_sized(
+                        [480.0, 16.0],
+                        egui::Label::new(RichText::new(&self.dst_path).monospace()),
+                    );
+
+                    if ui.button("Zielverzeichnis...").clicked() {
+                        if let Some(path) = FileDialog::new().set_directory("/").pick_folder() {
+                            self.dst_path = path.display().to_string().to_owned();
+                        }
+                    }
+                });
+
+                ui.add_space(96.0);
+
+                if ui.button("verTIFF mich!").clicked() {
+                    run_bttn(&self.src_path, &self.dst_path)
                 }
-            );
+            });
         });
     }
 }
@@ -94,23 +83,23 @@ fn run_bttn(src_path: &str, dst_path: &str) {
                 let savefile_tiff = format!("{}/{}.tiff", dst_path, savefile_wo_ext[0]);
 
                 Command::new("magick")
-                        .arg("-density")
-                        .arg("300")
-                        .arg(src_path_string)
-                        .arg("-background")
-                        .arg("white")
-                        .arg("-alpha")
-                        .arg("background")
-                        .arg("-alpha")
-                        .arg("off")
-                        .arg("-colorspace")
-                        .arg("gray")
-                        .arg("-compress")
-                        .arg("zip")
-                        .arg(savefile_tiff)
-                        .output()
-                        .expect("failed to execute process!");
-            },
+                    .arg("-density")
+                    .arg("300")
+                    .arg(src_path_string)
+                    .arg("-background")
+                    .arg("white")
+                    .arg("-alpha")
+                    .arg("background")
+                    .arg("-alpha")
+                    .arg("off")
+                    .arg("-colorspace")
+                    .arg("gray")
+                    .arg("-compress")
+                    .arg("zip")
+                    .arg(savefile_tiff)
+                    .output()
+                    .expect("failed to execute process!");
+            }
             Err(e) => println!("{}", e),
         }
     }
