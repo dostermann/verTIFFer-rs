@@ -80,8 +80,9 @@ fn run_bttn(src_path: &str, dst_path: &str) {
     } else {
         "/"
     };
+    println!("{}", dir_delimiter);
 
-    for entry in glob(format!("{}/*.pdf", src_path).as_str()).unwrap() {
+    for entry in glob(format!("{}{}*.pdf", src_path, dir_delimiter).as_str()).unwrap() {
         match entry {
             Ok(path) => {
                 let src_path_string = path.display().to_string();
@@ -89,6 +90,8 @@ fn run_bttn(src_path: &str, dst_path: &str) {
                 let filename_pdf = *filenames_with_ext.last().unwrap();
                 let savefile_wo_ext: Vec<&str> = filename_pdf.split(".").collect();
                 let savefile_tiff = format!("{}{}{}.tiff", dst_path, dir_delimiter, savefile_wo_ext[0]);
+
+                println!("{}", savefile_tiff);
 
                 Command::new("magick")
                     .arg("-density")
