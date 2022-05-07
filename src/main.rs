@@ -37,7 +37,8 @@ impl epi::App for Vtff {
                 ui.horizontal_wrapped(|ui| {
                     ui.add_sized(
                         [480.0, 16.0],
-                        egui::Label::new(RichText::new(&self.src_path).monospace()),
+                        // egui::Label::new(RichText::new(&self.src_path).monospace()),
+                        egui::TextEdit::singleline(&mut self.src_path).interactive(false),
                     );
 
                     if ui.button("Quellverzeichnis...").clicked() {
@@ -52,7 +53,8 @@ impl epi::App for Vtff {
                 ui.horizontal_wrapped(|ui| {
                     ui.add_sized(
                         [480.0, 16.0],
-                        egui::Label::new(RichText::new(&self.dst_path).monospace()),
+                        // egui::Label::new(RichText::new(&self.dst_path).monospace()),
+                        egui::TextEdit::singleline(&mut self.dst_path).interactive(false),
                     );
 
                     if ui.button("Zielverzeichnis...").clicked() {
@@ -80,7 +82,6 @@ fn run_bttn(src_path: &str, dst_path: &str) {
     } else {
         "/"
     };
-    println!("{}", dir_delimiter);
 
     for entry in glob(format!("{}{}*.pdf", src_path, dir_delimiter).as_str()).unwrap() {
         match entry {
@@ -91,25 +92,43 @@ fn run_bttn(src_path: &str, dst_path: &str) {
                 let savefile_wo_ext: Vec<&str> = filename_pdf.split(".").collect();
                 let savefile_tiff = format!("{}{}{}.tiff", dst_path, dir_delimiter, savefile_wo_ext[0]);
 
-                println!("{}", savefile_tiff);
-
-                // Command::new("magick")
-                //     .arg("-density")
-                //     .arg("300")
-                //     .arg(src_path_string)
-                //     .arg("-background")
-                //     .arg("white")
-                //     .arg("-alpha")
-                //     .arg("background")
-                //     .arg("-alpha")
-                //     .arg("off")
-                //     .arg("-colorspace")
-                //     .arg("gray")
-                //     .arg("-compress")
-                //     .arg("zip")
-                //     .arg(savefile_tiff)
-                //     .output()
-                //     .expect("failed to execute process!");
+                if cfg!(windows) {
+                    Command::new(".\\magick-7.1.0.exe")
+                        .arg("-density")
+                        .arg("300")
+                        .arg(src_path_string)
+                        .arg("-background")
+                        .arg("white")
+                        .arg("-alpha")
+                        .arg("background")
+                        .arg("-alpha")
+                        .arg("off")
+                        .arg("-colorspace")
+                        .arg("gray")
+                        .arg("-compress")
+                        .arg("zip")
+                        .arg(savefile_tiff)
+                        .output()
+                        .expect("failed to execute process!");
+                } else {
+                    Command::new("magick")
+                        .arg("-density")
+                        .arg("300")
+                        .arg(src_path_string)
+                        .arg("-background")
+                        .arg("white")
+                        .arg("-alpha")
+                        .arg("background")
+                        .arg("-alpha")
+                        .arg("off")
+                        .arg("-colorspace")
+                        .arg("gray")
+                        .arg("-compress")
+                        .arg("zip")
+                        .arg(savefile_tiff)
+                        .output()
+                        .expect("failed to execute process!");
+                }
             }
             Err(e) => println!("{}", e),
         }
