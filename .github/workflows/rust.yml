@@ -25,3 +25,4 @@ jobs:
       with:
         name: vertiffer-rs
         path: target/release/vertiffer-rs.exe
+        path: ImageMagick-7.1.0/

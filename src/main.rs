@@ -1,9 +1,6 @@
-// #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-use eframe::{
-    egui::{self, RichText, TextBuffer},
-    epi,
-};
+use eframe::{egui, epi};
 use glob::glob;
 use rfd::FileDialog;
 use std::process::Command;
@@ -90,10 +87,11 @@ fn run_bttn(src_path: &str, dst_path: &str) {
                 let filenames_with_ext: Vec<&str> = src_path_string.split(dir_delimiter).collect();
                 let filename_pdf = *filenames_with_ext.last().unwrap();
                 let savefile_wo_ext: Vec<&str> = filename_pdf.split(".").collect();
-                let savefile_tiff = format!("{}{}{}.tiff", dst_path, dir_delimiter, savefile_wo_ext[0]);
+                let savefile_tiff =
+                    format!("{}{}{}.tiff", dst_path, dir_delimiter, savefile_wo_ext[0]);
 
                 if cfg!(windows) {
-                    Command::new(".\\magick-7.1.0.exe")
+                    Command::new(".\\ImageMagick-7.1.0\\magick.exe")
                         .arg("-density")
                         .arg("300")
                         .arg(src_path_string)
