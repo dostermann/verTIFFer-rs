@@ -1,7 +1,7 @@
-#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+// #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use eframe::{
-    egui::{self, RichText},
+    egui::{self, RichText, TextBuffer},
     epi,
 };
 use glob::glob;
