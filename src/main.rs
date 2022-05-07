@@ -41,7 +41,7 @@ impl epi::App for Vtff {
                     );
 
                     if ui.button("Quellverzeichnis...").clicked() {
-                        if let Some(path) = FileDialog::new().set_directory("/").pick_folder() {
+                        if let Some(path) = FileDialog::new().pick_folder() {
                             self.src_path = path.display().to_string().to_owned();
                         }
                     }
@@ -56,7 +56,7 @@ impl epi::App for Vtff {
                     );
 
                     if ui.button("Zielverzeichnis...").clicked() {
-                        if let Some(path) = FileDialog::new().set_directory("/").pick_folder() {
+                        if let Some(path) = FileDialog::new().pick_folder() {
                             self.dst_path = path.display().to_string().to_owned();
                         }
                     }
@@ -73,14 +73,22 @@ impl epi::App for Vtff {
 }
 
 fn run_bttn(src_path: &str, dst_path: &str) {
+    let dir_delimiter = if cfg!(windows) {
+        "\\"
+    } else if cfg!(unix) {
+        "/"
+    } else {
+        "/"
+    };
+
     for entry in glob(format!("{}/*.pdf", src_path).as_str()).unwrap() {
         match entry {
             Ok(path) => {
                 let src_path_string = path.display().to_string();
-                let filenames_with_ext: Vec<&str> = src_path_string.split("/").collect();
+                let filenames_with_ext: Vec<&str> = src_path_string.split(dir_delimiter).collect();
                 let filename_pdf = *filenames_with_ext.last().unwrap();
                 let savefile_wo_ext: Vec<&str> = filename_pdf.split(".").collect();
-                let savefile_tiff = format!("{}/{}.tiff", dst_path, savefile_wo_ext[0]);
+                let savefile_tiff = format!("{}{}{}.tiff", dst_path, dir_delimiter, savefile_wo_ext[0]);
 
                 Command::new("magick")
                     .arg("-density")
