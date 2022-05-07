@@ -93,23 +93,23 @@ fn run_bttn(src_path: &str, dst_path: &str) {
 
                 println!("{}", savefile_tiff);
 
-                Command::new("magick")
-                    .arg("-density")
-                    .arg("300")
-                    .arg(src_path_string)
-                    .arg("-background")
-                    .arg("white")
-                    .arg("-alpha")
-                    .arg("background")
-                    .arg("-alpha")
-                    .arg("off")
-                    .arg("-colorspace")
-                    .arg("gray")
-                    .arg("-compress")
-                    .arg("zip")
-                    .arg(savefile_tiff)
-                    .output()
-                    .expect("failed to execute process!");
+                // Command::new("magick")
+                //     .arg("-density")
+                //     .arg("300")
+                //     .arg(src_path_string)
+                //     .arg("-background")
+                //     .arg("white")
+                //     .arg("-alpha")
+                //     .arg("background")
+                //     .arg("-alpha")
+                //     .arg("off")
+                //     .arg("-colorspace")
+                //     .arg("gray")
+                //     .arg("-compress")
+                //     .arg("zip")
+                //     .arg(savefile_tiff)
+                //     .output()
+                //     .expect("failed to execute process!");
             }
             Err(e) => println!("{}", e),
         }
