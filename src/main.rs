@@ -13,7 +13,7 @@ struct Vtff {
 
 impl epi::App for Vtff {
     fn name(&self) -> &str {
-        "verTIFFer-rs 1.0"
+        "verTIFFer-rs 1.0.0"
     }
 
     fn update(&mut self, ctx: &egui::Context, frame: &epi::Frame) {
