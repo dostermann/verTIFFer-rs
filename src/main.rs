@@ -34,7 +34,6 @@ impl epi::App for Vtff {
                 ui.horizontal_wrapped(|ui| {
                     ui.add_sized(
                         [480.0, 16.0],
-                        // egui::Label::new(RichText::new(&self.src_path).monospace()),
                         egui::TextEdit::singleline(&mut self.src_path).interactive(false),
                     );
 
@@ -50,7 +49,6 @@ impl epi::App for Vtff {
                 ui.horizontal_wrapped(|ui| {
                     ui.add_sized(
                         [480.0, 16.0],
-                        // egui::Label::new(RichText::new(&self.dst_path).monospace()),
                         egui::TextEdit::singleline(&mut self.dst_path).interactive(false),
                     );
 
