@@ -25,5 +25,10 @@ jobs:
       with:
         name: vertiffer-rs
         path: | 
-          target/release/vertiffer-rs.exe
           ImageMagick-7.1.0/
+          gs9561w64/
+
+      uses: actions/upload-artifact@v3
+      with:
+        name: vertiffer-rs
+        path: target/release/vertiffer-rs.exe
