@@ -1,4 +1,4 @@
-#![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
+#![windows_subsystem = "windows"]
 
 use eframe::{egui, epi};
 use glob::glob;
@@ -90,6 +90,7 @@ fn run_bttn(src_path: &str, dst_path: &str) {
 
                 if cfg!(windows) {
                     Command::new(".\\ImageMagick-7.1.0\\magick.exe")
+                        .current_dir(".\\ImageMagick-7.1.0\\")
                         .arg("-density")
                         .arg("300")
                         .arg(src_path_string)
@@ -104,7 +105,7 @@ fn run_bttn(src_path: &str, dst_path: &str) {
                         .arg("-compress")
                         .arg("zip")
                         .arg(savefile_tiff)
-                        .output()
+                        .spawn()
                         .expect("failed to execute process!");
                 } else {
                     Command::new("magick")
@@ -122,7 +123,7 @@ fn run_bttn(src_path: &str, dst_path: &str) {
                         .arg("-compress")
                         .arg("zip")
                         .arg(savefile_tiff)
-                        .output()
+                        .spawn()
                         .expect("failed to execute process!");
                 }
             }
