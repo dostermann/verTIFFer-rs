@@ -17,18 +17,18 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build
-      run: cargo build --release
-    # - name: Run tests
-      # run: cargo test --verbose
+      run: cargo build --release --verbose
+    - name: Run tests
+      run: cargo test --verbose
 
     - uses: actions/upload-artifact@v3
       with:
-        name: vertiffer-rs
+        name: vertiffer-rs-1.0.0-win64
         path: | 
           ImageMagick-7.1.0/
           gs9561w64/
 
     - uses: actions/upload-artifact@v3
       with:
-        name: vertiffer-rs
+        name: vertiffer-rs-1.0.0-win64
         path: target/release/vertiffer-rs.exe
