@@ -105,7 +105,7 @@ fn run_bttn(src_path: &str, dst_path: &str) {
                         .arg("-compress")
                         .arg("zip")
                         .arg(savefile_tiff)
-                        .spawn()
+                        .status()
                         .expect("failed to execute process!");
                 } else {
                     Command::new("magick")
@@ -123,7 +123,7 @@ fn run_bttn(src_path: &str, dst_path: &str) {
                         .arg("-compress")
                         .arg("zip")
                         .arg(savefile_tiff)
-                        .spawn()
+                        .status()
                         .expect("failed to execute process!");
                 }
             }
